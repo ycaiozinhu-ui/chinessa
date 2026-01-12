@@ -2,10 +2,9 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Chinessa</title>
+  <title>Chinessa Bot</title>
 
-  <!-- Fonte estilo Loritta -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -16,72 +15,178 @@
     }
 
     body {
-      height: 100vh;
-      background: #ffffff;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f7ff, #eef2ff);
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .container {
+    .card {
+      background: white;
+      max-width: 780px;
+      width: 100%;
+      padding: 50px;
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.15);
       text-align: center;
+      animation: fadeIn 0.6s ease;
     }
 
     h1 {
-      font-size: 46px;
+      font-size: 48px;
       font-weight: 700;
       color: #2563eb;
+      animation: float 3s ease-in-out infinite;
     }
 
-    h1 span {
-      color: #1e40ff;
+    .subtitle {
+      margin-top: 12px;
+      font-size: 18px;
+      color: #555;
     }
 
     .buttons {
       margin-top: 40px;
       display: flex;
-      gap: 20px;
       justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
     }
 
     .btn {
       padding: 15px 36px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-size: 18px;
+      border-radius: 16px;
+      font-size: 17px;
       font-weight: 600;
-      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      transition: 0.25s;
+      text-decoration: none;
     }
 
-    .dashboard {
+    .btn.add {
       background: #7c3aed;
-      color: #fff;
+      color: white;
     }
 
-    .dashboard:hover {
+    .btn.add:hover {
       background: #6d28d9;
+      transform: translateY(-2px);
     }
 
-    .invite {
+    .btn.info {
       background: #f97316;
-      color: #fff;
+      color: white;
     }
 
-    .invite:hover {
+    .btn.info:hover {
       background: #ea580c;
+      transform: translateY(-2px);
+    }
+
+    .saiba {
+      display: none;
+      margin-top: 40px;
+      text-align: left;
+      animation: slide 0.4s ease;
+    }
+
+    .saiba h2 {
+      color: #2563eb;
+      margin-bottom: 15px;
+    }
+
+    .saiba ul {
+      margin: 15px 0 20px 20px;
+    }
+
+    .saiba li {
+      margin-bottom: 8px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slide {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 36px;
+      }
+      .card {
+        padding: 35px 25px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Olá, sou a <span>Chinessa</span></h1>
+  <div class="card">
+    <h1>Olá, eu sou a Chinessa</h1>
+    <p class="subtitle">A energia que transforma seu servidor ✨</p>
 
     <div class="buttons">
-      <a href="#" class="btn dashboard">Dashboard</a>
-      <a href="https://discord.com/oauth2/authorize?client_id=1460393967546925159" class="btn invite">Me adicione</a>
+      <a
+        href="https://discord.com/oauth2/authorize?client_id=1460393967546925159"
+        target="_blank"
+        class="btn add"
+      >
+        Me adicione
+      </a>
+
+      <button class="btn info" onclick="toggle()">Saiba mais</button>
+    </div>
+
+    <div class="saiba" id="saiba">
+      <h2>✨ Sobre a Chinessa</h2>
+      <p>
+        A <b>Chinessa</b> é um bot para <b>Discord</b> feito pra ser rápida,
+        divertida e útil de verdade, sem complicação.
+      </p>
+
+      <p style="margin-top:10px;">
+        Com a Chinessa no servidor, tudo fica mais organizado e interativo ✨
+      </p>
+
+      <h3 style="margin-top:20px;">💡 O que ela faz?</h3>
+      <ul>
+        <li>Automatiza tarefas chatas</li>
+        <li>Ajuda na moderação do servidor</li>
+        <li>Interage com os membros</li>
+        <li>Deixa o servidor mais ativo e profissional</li>
+      </ul>
+
+      <h3>🚀 Por que usar?</h3>
+      <p>
+        Simples, eficiente e moderna. Nada de painel confuso
+        ou comandos inúteis.
+      </p>
+
+      <p style="margin-top:15px; font-weight:600;">
+        🔥 Chinessa não é só um bot, é a energia do seu servidor.
+      </p>
     </div>
   </div>
+
+  <script>
+    function toggle() {
+      const s = document.getElementById("saiba");
+      s.style.display = s.style.display === "block" ? "none" : "block";
+    }
+  </script>
 
 </body>
 </html>
