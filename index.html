@@ -1,192 +1,266 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Chinessa Bot</title>
+<meta charset="UTF-8">
+<title>Chinessa Bot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<style>
+:root {
+  --card-bg: rgba(255,255,255,0.92);
+  --text: #444;
+}
 
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #f5f7ff, #eef2ff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: rgba(20,20,20,0.9);
+    --text: #ddd;
+  }
+}
 
-    .card {
-      background: white;
-      max-width: 780px;
-      width: 100%;
-      padding: 50px;
-      border-radius: 24px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-      text-align: center;
-      animation: fadeIn 0.6s ease;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      color: #2563eb;
-      animation: float 3s ease-in-out infinite;
-    }
+body {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url("bg.jpg") center / cover no-repeat fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
 
-    .subtitle {
-      margin-top: 12px;
-      font-size: 18px;
-      color: #555;
-    }
+/* PARTICLES */
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
 
-    .buttons {
-      margin-top: 40px;
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
+/* CARD */
+.card {
+  position: relative;
+  z-index: 2;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  max-width: 860px;
+  width: 100%;
+  padding: 55px;
+  border-radius: 30px;
+  box-shadow: 0 35px 90px rgba(0,0,0,0.5);
+  text-align: center;
+  animation: fadeIn 0.7s ease;
+  color: var(--text);
+}
 
-    .btn {
-      padding: 15px 36px;
-      border-radius: 16px;
-      font-size: 17px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: 0.25s;
-      text-decoration: none;
-    }
+h1 {
+  font-size: 46px;
+  font-weight: 700;
+  color: #7c3aed;
+  animation: float 3s ease-in-out infinite;
+}
 
-    .btn.add {
-      background: #7c3aed;
-      color: white;
-    }
+.subtitle {
+  margin-top: 12px;
+  font-size: 18px;
+}
 
-    .btn.add:hover {
-      background: #6d28d9;
-      transform: translateY(-2px);
-    }
+.buttons {
+  margin-top: 42px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
 
-    .btn.info {
-      background: #f97316;
-      color: white;
-    }
+.btn {
+  padding: 15px 38px;
+  border-radius: 18px;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s;
+  text-decoration: none;
+  color: white;
+}
 
-    .btn.info:hover {
-      background: #ea580c;
-      transform: translateY(-2px);
-    }
+.btn.add {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
 
-    .saiba {
-      display: none;
-      margin-top: 40px;
-      text-align: left;
-      animation: slide 0.4s ease;
-    }
+.btn.info {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
 
-    .saiba h2 {
-      color: #2563eb;
-      margin-bottom: 15px;
-    }
+.btn:hover {
+  transform: translateY(-3px) scale(1.05);
+}
 
-    .saiba ul {
-      margin: 15px 0 20px 20px;
-    }
+.saiba {
+  margin-top: 40px;
+  text-align: left;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.4s ease;
+}
 
-    .saiba li {
-      margin-bottom: 8px;
-    }
+.saiba.active {
+  opacity: 1;
+  max-height: 1200px;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+.saiba h2 {
+  color: #7c3aed;
+  margin-bottom: 15px;
+}
 
-    @keyframes slide {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+/* MUSIC BUTTON */
+.music {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 26px;
+  z-index: 3;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+  box-shadow: 0 10px 30px rgba(249,115,22,0.6);
+}
 
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
-    }
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 36px;
-      }
-      .card {
-        padding: 35px 25px;
-      }
-    }
-  </style>
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 34px; }
+  .card { padding: 35px 25px; }
+}
+</style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>Olá, eu sou o Sky Astral</h1>
-    <p class="subtitle">A energia que transforma seu servidor ✨</p>
+<canvas id="particles"></canvas>
 
-    <div class="buttons">
-      <a
-        href="https://discord.com/oauth2/authorize?client_id=1460393967546925159"
-        target="_blank"
-        class="btn add"
-      >
-        Me adicione
-      </a>
+<div class="card">
+  <h1>Olá, eu sou a Chinessa</h1>
+  <p class="subtitle">A energia que transforma seu servidor no Discord ✨</p>
 
-      <button class="btn info" onclick="toggle()">Saiba mais</button>
-    </div>
-
-    <div class="saiba" id="saiba">
-      <h2>✨ Sobre a Chinessa</h2>
-      <p>
-        A <b>Chinessa</b> é um bot para <b>Discord</b> feito pra ser rápida,
-        divertida e útil de verdade, sem complicação.
-      </p>
-
-      <p style="margin-top:10px;">
-        Com a Chinessa no servidor, tudo fica mais organizado e interativo ✨
-      </p>
-
-      <h3 style="margin-top:20px;">💡 O que ela faz?</h3>
-      <ul>
-        <li>Automatiza tarefas chatas</li>
-        <li>Ajuda na moderação do servidor</li>
-        <li>Interage com os membros</li>
-        <li>Deixa o servidor mais ativo e profissional</li>
-      </ul>
-
-      <h3>🚀 Por que usar?</h3>
-      <p>
-        Simples, eficiente e moderna. Nada de painel confuso
-        ou comandos inúteis.
-      </p>
-
-      <p style="margin-top:15px; font-weight:600;">
-        🔥 Chinessa não é só um bot, é a energia do seu servidor.
-      </p>
-    </div>
+  <div class="buttons">
+    <a href="https://discord.com/oauth2/authorize?client_id=1460393967546925159"
+       target="_blank" class="btn add">Me adicionar</a>
+    <button class="btn info" onclick="toggleSaiba()">Saiba mais</button>
   </div>
 
-  <script>
-    function toggle() {
-      const s = document.getElementById("saiba");
-      s.style.display = s.style.display === "block" ? "none" : "block";
-    }
-  </script>
+  <div class="saiba" id="saiba">
+    <h2>✨ Sobre a Chinessa</h2>
+    <p>Bot moderno, rápido e feito pra deixar seu servidor vivo.</p>
+
+    <h3 style="margin-top:20px;">💡 Funções</h3>
+    <ul>
+      <li>Automação inteligente</li>
+      <li>Moderação eficiente</li>
+      <li>Interação com membros</li>
+      <li>Servidor mais ativo</li>
+    </ul>
+
+    <p style="margin-top:15px;font-weight:600;">
+      🔥 Não é só um bot, é a vibe.
+    </p>
+  </div>
+</div>
+
+<!-- MUSIC -->
+<audio id="music" src="music.mp3" loop></audio>
+<div class="music" onclick="toggleMusic()">🎵</div>
+
+<script>
+function toggleSaiba() {
+  document.getElementById("saiba").classList.toggle("active");
+}
+
+/* MUSIC */
+const music = document.getElementById("music");
+let playing = false;
+
+function toggleMusic() {
+  if (playing) {
+    music.pause();
+  } else {
+    music.play();
+  }
+  playing = !playing;
+}
+
+/* PARTICLES */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 1,
+    d: Math.random() * 1 + 0.5
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255,255,255,0.7)";
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+    p.y += p.d;
+    if (p.y > canvas.height) p.y = 0;
+  });
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+window.onresize = () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+};
+</script>
 
 </body>
 </html>
