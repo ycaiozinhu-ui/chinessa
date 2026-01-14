@@ -8,18 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --card-bg: rgba(255,255,255,0.92);
-  --text: #444;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --card-bg: rgba(20,20,20,0.9);
-    --text: #ddd;
-  }
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -50,7 +38,7 @@ canvas {
 .card {
   position: relative;
   z-index: 2;
-  background: var(--card-bg);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(12px);
   max-width: 860px;
   width: 100%;
@@ -59,7 +47,6 @@ canvas {
   box-shadow: 0 35px 90px rgba(0,0,0,0.5);
   text-align: center;
   animation: fadeIn 0.7s ease;
-  color: var(--text);
 }
 
 h1 {
@@ -72,6 +59,7 @@ h1 {
 .subtitle {
   margin-top: 12px;
   font-size: 18px;
+  color: #444;
 }
 
 .buttons {
@@ -125,26 +113,6 @@ h1 {
   margin-bottom: 15px;
 }
 
-/* MUSIC BUTTON */
-.music {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f97316, #ea580c);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 26px;
-  z-index: 3;
-  cursor: pointer;
-  animation: pulse 2s infinite;
-  box-shadow: 0 10px 30px rgba(249,115,22,0.6);
-}
-
 /* ANIMATIONS */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
@@ -157,12 +125,6 @@ h1 {
   100% { transform: translateY(0); }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
 @media (max-width: 600px) {
   h1 { font-size: 34px; }
   .card { padding: 35px 25px; }
@@ -172,15 +134,19 @@ h1 {
 
 <body>
 
+<!-- PARTICLES -->
 <canvas id="particles"></canvas>
 
+<!-- CARD -->
 <div class="card">
   <h1>Olá, eu sou a Chinessa</h1>
   <p class="subtitle">A energia que transforma seu servidor no Discord ✨</p>
 
   <div class="buttons">
     <a href="https://discord.com/oauth2/authorize?client_id=1460393967546925159"
-       target="_blank" class="btn add">Me adicionar</a>
+       target="_blank" class="btn add">
+       Me adicionar
+    </a>
     <button class="btn info" onclick="toggleSaiba()">Saiba mais</button>
   </div>
 
@@ -202,36 +168,36 @@ h1 {
   </div>
 </div>
 
-<!-- MUSIC -->
-<audio id="music" src="music.mp3" loop></audio>
-<div class="music" onclick="toggleMusic()">🎵</div>
+<!-- MUSIC (AUTOMÁTICA) -->
+<audio id="music" src="music.mp3" autoplay loop muted></audio>
 
 <script>
+/* SAIBA MAIS */
 function toggleSaiba() {
   document.getElementById("saiba").classList.toggle("active");
 }
 
-/* MUSIC */
+/* MUSIC AUTOPLAY (mobile safe) */
 const music = document.getElementById("music");
-let playing = false;
 
-function toggleMusic() {
-  if (playing) {
-    music.pause();
-  } else {
+document.addEventListener("click", () => {
+  if (music.muted) {
+    music.muted = false;
     music.play();
   }
-  playing = !playing;
-}
+}, { once: true });
 
 /* PARTICLES */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+
+function resize() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
 
 let particles = [];
-
 for (let i = 0; i < 60; i++) {
   particles.push({
     x: Math.random() * canvas.width,
@@ -253,13 +219,9 @@ function draw() {
   });
   requestAnimationFrame(draw);
 }
-
 draw();
 
-window.onresize = () => {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-};
+window.addEventListener("resize", resize);
 </script>
 
 </body>
